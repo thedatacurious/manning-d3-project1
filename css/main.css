@@ -49,8 +49,10 @@ a {
   margin: 100px 0 30px;
 }
 .label {
-  font-size: 13px;
+  font-size: .75rem;
 }
+
+
 
 /* Legend */
 #legend {
