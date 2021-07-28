@@ -103,4 +103,32 @@ bubbleChart.selectAll("circle")
 .style("fill", d => colorScale(d.artist))
 
 console.log(data)
+
+var colorLegend = d3.select("div.legend-color")
+
+var entries = colorLegend.append('ul')
+.selectAll('li')
+.data(data)
+.join('li')
+
+entries.append('span')
+.attr("class","legend-circle")
+.style("background-color", d => colorScale(d.artist))
+
+entries.append('span')
+.attr("class", "label label-value")
+.html(d => d.artist)
+
+
+
+
+
+
+
+
+
+d3.select(".legend-area")
+.append('svg')
+.attr('width', dimensions.width/2)
+.attr('height', dimensions.height/2)
 }
