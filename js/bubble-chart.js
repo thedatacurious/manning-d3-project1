@@ -55,11 +55,11 @@ const videoStreamsScale = d3.scaleLinear()
 .range([dimensions.boundedHeight,0])
 
 // For bubble size
-const maxRadius = 20
+const maxRadius = 24
 
 const bubblesAreaScale = d3.scaleLinear()
 .domain([0,d3.max(data.map(d=> d.album_sales_millions))])
-.range([(maxRadius/2)**2,maxRadius**2])
+.range([(maxRadius/4)**2,maxRadius**2])
 
 // For color of bubbles
 const colorScale = d3.scaleOrdinal()
@@ -76,7 +76,7 @@ const xAxis = bubbleChart.append("g")
 xAxis.append("text")
 .attr("x", dimensions.boundedWidth/2)
 .attr("y", (dimensions.margin.bottom *0.8))
-.style("fill", "#aaa")
+.style("fill", "black")
 .attr("class", "label label-title")
 .text("On-demand Audio Streams (millions)")
 
@@ -88,12 +88,12 @@ const yAxis = bubbleChart.append("g")
 yAxis.append("text")
 .attr("x", 5)
 .attr("y", 0)
-.style("fill", "#aaa")
+.style("fill", "black")
 .attr("class", "label label-title")
 .text("On-demand Video Streams (millions)")
 .style("text-anchor", "start")
 
-// Draw bubbles
+//// Draw bubbles
 bubbleChart.selectAll("circle")
 .data(data)
 .join("circle")
@@ -104,6 +104,8 @@ bubbleChart.selectAll("circle")
 
 console.log(data)
 
+//// Add legend
+
 var colorLegend = d3.select("div.legend-color")
 
 var entries = colorLegend.append('ul')
@@ -111,7 +113,8 @@ var entries = colorLegend.append('ul')
 .data(data)
 .join('li')
 
-entries.append('span')
+entries
+.append('span')
 .attr("class","legend-circle")
 .style("background-color", d => colorScale(d.artist))
 
@@ -119,16 +122,74 @@ entries.append('span')
 .attr("class", "label label-value")
 .html(d => d.artist)
 
+var sizeLegend = d3.select(".legend-area")
 
-
-
-
-
-
-
-
-d3.select(".legend-area")
-.append('svg')
+circles = sizeLegend.append('svg')
 .attr('width', dimensions.width/2)
 .attr('height', dimensions.height/2)
+
+circles.append('circle')
+.attr("cx",Math.sqrt(bubblesAreaScale(1.5)))
+.attr("cy", 60-Math.sqrt(bubblesAreaScale(1.5)))
+.attr("r", Math.sqrt(bubblesAreaScale(1.5)))
+.style("fill", 'rgba(114, 122, 135, 0.4)')
+
+
+circles.append('circle')
+.attr("cx",Math.sqrt(bubblesAreaScale(1.5)))
+.attr("cy",60-Math.sqrt(bubblesAreaScale(0.5)))
+.attr("r", Math.sqrt(bubblesAreaScale(0.5)))
+.style("fill", 'rgba(114, 122, 135, 0.4)')
+
+circles.append('circle')
+.attr("cx",Math.sqrt(bubblesAreaScale(1.5)))
+.attr("cy",60-Math.sqrt(bubblesAreaScale(0.1)))
+.attr("r", Math.sqrt(bubblesAreaScale(0.1)))
+.style("fill", 'rgba(114, 122, 135, 0.4)')
+
+
+circles.append('line')
+.attr("x1",Math.sqrt(bubblesAreaScale(1.5)))
+.attr("y1", 60-2*Math.sqrt(bubblesAreaScale(0.1)))
+.attr("x2", 100)
+.attr("y2", 60-2*Math.sqrt(bubblesAreaScale(0.1)))
+.attr("stroke", "black")
+.style("stroke-dasharray", ("3, 3"))
+
+circles.append('line')
+.attr("x1",Math.sqrt(bubblesAreaScale(1.5)))
+.attr("y1", 60-2*Math.sqrt(bubblesAreaScale(0.5)))
+.attr("x2", 100)
+.attr("y2", 60-2*Math.sqrt(bubblesAreaScale(0.5)))
+.attr("stroke", "black")
+.style("stroke-dasharray", ("3, 3"))
+
+circles.append('line')
+.attr("x1",Math.sqrt(bubblesAreaScale(1.5)))
+.attr("y1", 60-2*Math.sqrt(bubblesAreaScale(1.5)))
+.attr("x2", 100)
+.attr("y2", 60-2*Math.sqrt(bubblesAreaScale(1.5)))
+.attr("stroke", "black")
+.style("stroke-dasharray", ("3, 3"))
+
+circles.append('text')
+.attr("x",100)
+.attr("y", 60-2*Math.sqrt(bubblesAreaScale(1.5)))
+.attr("class", "label label-value")
+.text('1.5M')
+
+circles.append('text')
+.attr("x",100)
+.attr("y", 60-2*Math.sqrt(bubblesAreaScale(0.5)))
+.attr("class", "label label-value")
+.text('0.5M')
+
+circles.append('text')
+.attr("x",100)
+.attr("y", 60-2*Math.sqrt(bubblesAreaScale(0.1)))
+.attr("class", "label label-value")
+.text('0.1M')
+
+
+
 }
