@@ -1,12 +1,11 @@
 const metrics = ['total_album_consumption_millions', 'album_sales_millions', 'song_sales', 'on_demand_audio_streams_millions', 'on_demand_video_streams_millions'];
 let artists = [];
-// let data = [];
+
 d3.csv('../data/top_albums.csv').then(d => {
   createBubbleChart(d);
 })
 
 function createBubbleChart(data){
-   // data.push(data)
    data.forEach(datum => {
          metrics.forEach(metric => {
             datum[metric] = parseFloat(datum[metric]); // Convert strings to numbers
